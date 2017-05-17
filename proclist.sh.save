@@ -41,41 +41,27 @@ while [[ $# -ge 1 ]];do
 done
 
 output(){
-echo "Now is date_test---->$(date)"
+echo "                   "
+echo "                   "
+echo "                   "
+echo "now is ---->$(ps nejcr)"
+echo "                   "
 }
 
 while true;do
 clear
 output &
-read -s -t 1 -n 1 pressed_c
-
-if [ "$pressed_c" = "u" ];then
+read -s -t 1 -n 1 username
+if [ "$username" = "u" ];then
 
         clear
         output 
         tput cup 0 0
         echo -n "Uporabnik: "
         tput cup 0 10
-        read user_passed
+        read typing
 
 fi
-
-
-if [ "$pressed_c" = "n" ]; then
-
-	echo "$n"
-
-fi
-
-
-if [ "$pressed_c" ="k" ]; then
-
-	echo "$k"
-
-fi
-
-
-
 sleep 1 &
 
 done
