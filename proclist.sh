@@ -1,7 +1,7 @@
 #!/bin/bash
 
 
-user_passed=""
+user_passed="$(whoami)"
 number_passed=""
 
 while [[ $# -ge 1 ]];do
@@ -41,7 +41,17 @@ while [[ $# -ge 1 ]];do
 done
 
 output(){
-echo "Now is date_test---->$(date)"
+echo ""
+echo ""
+echo "UPORABNIK       PID    UKAZ  PPID   (UKAZ)              P        CPU"
+all_pids=$(ps h -u $user_passed -o ppid)
+
+for active_pid in ${all_pids} ; do
+
+	echo "$active_pid"
+
+done
+
 }
 
 while true;do
@@ -68,15 +78,22 @@ if [ "$pressed_c" = "n" ]; then
 fi
 
 
-if [ "$pressed_c" ="k" ]; then
+if [ "$pressed_c" = "k" ]; then
 
 	echo "$k"
 
 fi
 
 
+if [ "$pressed_c" = "q" ]; then
 
-sleep 1 &
+	exit 0;
+
+fi
+
+
+
+sleep 3 &
 
 done
 
