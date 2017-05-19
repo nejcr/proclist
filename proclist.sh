@@ -2,7 +2,7 @@
 
 
 user_passed="$(whoami)"
-number_passed=""
+number_passed="$(tput lines)"
 
 while [[ $# -ge 1 ]];do
  key=$1
@@ -41,23 +41,17 @@ while [[ $# -ge 1 ]];do
 done
 
 output(){
+
 echo ""
 echo ""
-echo "UPORABNIK       PID    UKAZ  PPID   (UKAZ)              P        CPU"
-all_pids=$(ps h -u $user_passed -o ppid)
-
-for active_pid in ${all_pids} ; do
-
-	echo "$active_pid"
-
-done
-
+echo "UPORABNIK       PID    UKAZ  PPID   (UKAZ)              P        CPU" 
+ps h -u $user_passed -o user,pid,comm,ppid,comm=$ppid,priority,%cpu --sort=-start_time | head "-$number_passed" 
 }
 
 while true;do
 clear
-output &
-read -s -t 1 -n 1 pressed_c
+output 
+read -s -t 1 -n 1 pressed_c 
 
 if [ "$pressed_c" = "u" ];then
 
@@ -66,7 +60,15 @@ if [ "$pressed_c" = "u" ];then
         tput cup 0 0
         echo -n "Uporabnik: "
         tput cup 0 10
-        read user_passed
+        read user_pressed
+	exists=$(grep -c $user_pressed":" /etc/passwd)
+                if [ $exists -eq 0 ]; then
+			tput reset
+                        echo "Napaka: neznan uporabnik." >&2
+                        exit 4
+                fi
+	user_passed=$user_pressed
+
 
 fi
 
@@ -93,7 +95,7 @@ fi
 
 
 
-sleep 3 &
+sleep 1 
 
 done
 
