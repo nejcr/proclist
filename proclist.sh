@@ -45,11 +45,21 @@ output(){
 echo ""
 echo ""
 echo "UPORABNIK       PID    UKAZ  PPID   (UKAZ)              P        CPU" 
-ps h -u $user_passed -o user,pid,comm,ppid,comm=$ppid,priority,%cpu --sort=-start_time | head "-$number_passed" 
+proclist=$(ps  h -u "$user_passed" -o pid:1 --sort=-start_time)
+niz=""
+for a_pid in ${proclist} ; do
+p_name=$(ps h -p "$a_pid" -o comm)
+a_ppid=$(ps h -p "$a_pid" -o ppid)
+parent_name=$(ps -o comm= $a_ppid)
+
+niz="$p_name  $parent_name   \n"
+done
+echo -e "$niz" 
+niz=""
 }
 
-while true;do
-clear
+while true; do
+clear  
 output 
 read -s -t 1 -n 1 pressed_c 
 
