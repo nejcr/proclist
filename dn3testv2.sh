@@ -131,6 +131,7 @@ echo "$geslo" | sudo -S killall -u student &>/dev/null #pobijemo vse procese stu
 #preverjanja ukazov in parmatrov: u+uporabnik
 izpis=$(echo -ne "u UporabnikKiNeObstaja\n q" | ./$1 -u root)
 echo -e "$izpis" | tr -d "\n" | grep -q -E "Napaka: neznan uporabnik\." && tocke13=$(($tocke13+2))
+echo -e "$izpis" | tr -d "\n" > stats.txt
 tocke=$((tocke+tocke13))
 echo -e "Ukaz u + napačen uporabnik\t\t$tocke13/2: skupaj=$tocke"
 
