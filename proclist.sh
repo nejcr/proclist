@@ -54,7 +54,7 @@ output() {
         c=$(($c+1))
     done
 
-    tput reset
+    tput clear
     printf "\n\n%-10s %-7s %-20s %-7s %-20s %-5s %-5s\n" "UPORABNIK" "PID" "UKAZ" "PPID" "(UKAZ)" "P" "CPU"
     printf "%s\n" "${array[@]}" | head -n $(($line_number))
 }
@@ -62,43 +62,60 @@ output() {
 
 
 
-
+tput civis
 while true; do
     output 
 
     read -s -t 1 -n 1 pressed_c 
     
     if [ "$pressed_c" = "u" ]; then
-        tput cup 0 0
+        tput cnorm
+	tput cup 0 0
         echo -n "Uporabnik: "
         tput cup 0 11
         read user_pressed
     	exists=$(grep -c $user_pressed":" /etc/passwd)
         if [ $exists -eq 0 ]; then
-            tput reset
+            tput clear
 	    echo "Napaka: neznan uporabnik." 
 	    exit 4
         fi
     	user_passed=$user_pressed
-    fi
+   	tput civis
+	fi
     
     if [ "$pressed_c" = "n" ]; then
-    	tput cup 0 0
+    	tput cnorm
+	tput cup 0 0
         echo -n "Število: "
-        tput cup 0 11
+        tput cup 0 9
 	read number_pressed
 	if ! [[ "$number_pressed" =~ ^[0-9]+$ ]]; then
-		tput reset 
+		tput clear 
 		echo "Napaka: argument ni številka." >&2
                 exit 6
         fi
+	tput civis
 	number_passed=$number_pressed
 
 
     fi
     
     if [ "$pressed_c" = "k" ]; then
-    	echo "k"
+    	tput cnorm
+	tput cup 0 0
+	echo -n "PID: "
+        tput cup 0 5
+        read pid_pressed
+	if ps -p $pid_pressed > /dev/null 2>&1; then
+		kill $pid_pressed
+	else
+		tput clear
+		echo "Napaka: proces ne obstaja" >&2
+		exit 7
+
+	fi
+	tput civis
     fi
     
     if [ "$pressed_c" = "q" ]; then
