@@ -76,8 +76,8 @@ while true; do
         read user_pressed
     	exists=$(grep -c $user_pressed":" /etc/passwd)
         if [ $exists -eq 0 ]; then
-            tput clear
-	    echo "Napaka: neznan uporabnik." 
+	    tput clear
+	    echo "Napaka: neznan uporabnik."
 	    exit 4
         fi
     	user_passed=$user_pressed
@@ -91,7 +91,6 @@ while true; do
         tput cup 0 9
 	read number_pressed
 	if ! [[ "$number_pressed" =~ ^[0-9]+$ ]]; then
-		tput clear 
 		echo "Napaka: argument ni številka." >&2
                 exit 6
         fi
