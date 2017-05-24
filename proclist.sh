@@ -84,7 +84,7 @@ while true; do
 		tput cup 0 0
 		tput el
 		napaka="Napaka: neznan uporabnik."
-		echo "$napaka" >&2
+		echo "$napaka"
         else
 		napaka=""
 		user_passed=$user_pressed
@@ -104,7 +104,7 @@ while true; do
 		tput cup 0 0
 		tput el
 		napaka="Napaka: argument ni številka."
-        	echo "$napaka" >&2
+        	echo "$napaka"
 	else
 		napaka=""
 		number_passed=$number_pressed
@@ -130,7 +130,7 @@ while true; do
 		tput cup 0 0
 		tput el
 		napaka="Napaka: proces ne obstaja"
-		echo "$napaka" >&2
+		echo "$napaka"
 
 	fi
 	tput civis
@@ -140,5 +140,5 @@ while true; do
     	exit 0;
     fi
 
-    sleep 1
+    
 done
